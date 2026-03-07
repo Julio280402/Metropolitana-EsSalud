@@ -1,326 +1,157 @@
-const app = document.getElementById("app");
+// ============================================================
+// LISTA DE PERSONAL — Edita aquí los nombres
+// fullName : nombre completo (guardado internamente)
+// name     : lo que se muestra en pantalla (1 nombre + 1 apellido)
+// room     : consultorio por defecto (editable en pantalla)
+// ============================================================
+const staffList = [
+    { id: 1, fullName: "Dr. Omar Alejandro Carpio Mendoza",   name: "Dr. Omar Carpio",    room: "C-101" },
+    { id: 2, fullName: "Dra. Elena Patricia Torres Vega",     name: "Dra. Elena Torres",  room: "C-102" },
+    { id: 3, fullName: "Lic. Ricardo Enrique Luna Paredes",   name: "Lic. Ricardo Luna",  room: "C-103" },
+    { id: 4, fullName: "Tec. Maria Isabel Sosa Quispe",       name: "Tec. Maria Sosa",    room: "Lab-1" },
+    { id: 5, fullName: "Dr. Juan Carlos Peralta Flores",      name: "Dr. Juan Peralta",   room: "C-105" },
+    { id: 6, fullName: "Lic. Ana Lucia Mendez Rojas",         name: "Lic. Ana Mendez",    room: "Triaje" },
+    { id: 6, fullName: "Lic. Veronica Fernades Caseres Flores",         name: "Lic. Veronica Flores",    room: "Triaje" }
+];
 
-/* =========================
-   UTILIDADES DE TIEMPO
-========================= */
-function fechaActual() {
-    return new Date().toISOString().split("T")[0];
-}
+let db = [];
 
-function ahora() {
-    return {
-        hora: new Date().toLocaleTimeString()
-    };
-}
-
-/* =========================
-   DATOS INICIALES
-========================= */
-let sedes = JSON.parse(localStorage.getItem("sedes")) || {
-    1: {
-        nombre: "Sede 1",
-        consultorios: [
-            {
-                numero: 101,
-                doctor: "No asignado",
-                estado: "No llegó",
-                historial: {}
-            },
-            {
-                numero: 102,
-                doctor: "No asignado",
-                estado: "No llegó",
-                historial: {}
-            }
-        ]
-    },
-    2: {
-        nombre: "Sede 2",
-        consultorios: [
-            {
-                numero: 201,
-                doctor: "No asignado",
-                estado: "No llegó",
-                historial: {}
-            },
-            {
-                numero: 202,
-                doctor: "No asignado",
-                estado: "No llegó",
-                historial: {}
-            }
-        ]
-    }
+window.onload = () => {
+    initDB();
+    renderStaff();
 };
 
-/* =========================
-   STORAGE
-========================= */
-function guardarDatos() {
-    localStorage.setItem("sedes", JSON.stringify(sedes));
-}
-
-/* =========================
-   REGISTRO POR FECHA
-========================= */
-function registroHoy(consultorio) {
-    const hoy = fechaActual();
-    if (!consultorio.historial[hoy]) {
-        consultorio.historial[hoy] = {};
-    }
-    return consultorio.historial[hoy];
-}
-
-/* =========================
-   PANTALLA INICIO
-========================= */
-function mostrarInicio() {
-    app.innerHTML = `
-        <div class="card">
-            <h2>Control de Consultorios</h2>
-
-            <button onclick="entrarSede(1)">Sede 1</button>
-            <button onclick="entrarSede(2)">Sede 2</button>
-
-            <hr>
-
-            <button onclick="mostrarHistorial()">📅 Ver historial</button>
-
-            <hr>
-
-            <button onclick="nuevoDia()" style="background:#dc3545">
-                🔄 Nuevo día
-            </button>
-        </div>
-    `;
-}
-
-/* =========================
-   SEDE
-========================= */
-function claseEstado(estado) {
-    switch (estado) {
-        case "En consulta": return "estado-consulta";
-        case "En almuerzo": return "estado-almuerzo";
-        case "Finalizó turno": return "estado-salida";
-        default: return "estado-no-llego";
+function initDB() {
+    const saved = localStorage.getItem('policlinico_db');
+    if (saved) {
+        db = JSON.parse(saved);
+    } else {
+        db = staffList.map(p => ({
+            ...p,
+            status: 'none',
+            times: { in: '-', motivo: '-', regreso: '-', final: '-' }
+        }));
+        save();
     }
 }
 
-function entrarSede(id) {
-    const sede = sedes[id];
-    let filas = "";
+function save() {
+    localStorage.setItem('policlinico_db', JSON.stringify(db));
+}
 
-    sede.consultorios.forEach((c, i) => {
-        filas += `
-            <tr class="${claseEstado(c.estado)}">
-                <td data-label="Consultorio">${c.numero}</td>
-                <td data-label="Doctor">${c.doctor}</td>
-                <td data-label="Estado">${c.estado}</td>
-                <td data-label="Acción">
-                    <button onclick="verConsultorio(${id}, ${i})">
-                        Ver
-                    </button>
+function showView(viewId) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById(viewId).classList.add('active');
+    if (viewId === 'view-history') renderHistory();
+}
+
+function renderStaff(filter = "") {
+    const container = document.getElementById('staff-list');
+    container.innerHTML = "";
+
+    // ✅ CAMBIO 1: Busca por fullName (nombre completo)
+    db.filter(p => p.fullName.toLowerCase().includes(filter.toLowerCase()))
+      .forEach(p => {
+        const card = document.createElement('div');
+        card.className = `staff-card state-${p.status}`;
+        card.innerHTML = `
+            <div class="card-header">
+                <div class="name-tag">
+                    <h4>${p.name}</h4>
+                </div>
+                <div class="room-tag">
+                    <input type="text" value="${p.room}" onchange="updateRoom(${p.id}, this.value)" placeholder="Cons.">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn-action btn-in"
+                    ${p.status !== 'none' ? 'disabled' : ''}
+                    onclick="mark(${p.id}, 'in')">Ingreso</button>
+                <button class="btn-action btn-motivo"
+                    ${p.status !== 'in' ? 'disabled' : ''}
+                    onclick="mark(${p.id}, 'motivo')">Salida</button>
+                <button class="btn-action btn-regreso"
+                    ${p.status !== 'out' ? 'disabled' : ''}
+                    onclick="mark(${p.id}, 'regreso')">Regreso</button>
+                <button class="btn-action btn-fin"
+                    ${p.status === 'final' || p.status === 'none' ? 'disabled' : ''}
+                    onclick="mark(${p.id}, 'final')">Final</button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function mark(id, type) {
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const idx = db.findIndex(p => p.id === id);
+
+    if      (type === 'in')      { db[idx].status = 'in';    db[idx].times.in      = time; }
+    else if (type === 'motivo')  { db[idx].status = 'out';   db[idx].times.motivo  = time; }
+    else if (type === 'regreso') { db[idx].status = 'in';    db[idx].times.regreso = time; }
+    else if (type === 'final')   { db[idx].status = 'final'; db[idx].times.final   = time; }
+
+    save();
+    renderStaff(document.getElementById('search-input').value);
+}
+
+function updateRoom(id, val) {
+    const idx = db.findIndex(p => p.id === id);
+    db[idx].room = val;
+    save();
+}
+
+function filterStaff() {
+    renderStaff(document.getElementById('search-input').value);
+}
+
+function renderHistory() {
+    const body = document.getElementById('history-body');
+    body.innerHTML = "";
+
+    const sorted = [...db]
+        // ✅ CAMBIO 2: Solo muestra personal que tenga hora de ingreso registrada
+        .filter(p => p.times.in !== '-')
+        .sort((a, b) => a.times.in.localeCompare(b.times.in));
+
+    if (sorted.length === 0) {
+        body.innerHTML = `
+            <tr>
+                <td colspan="6" style="text-align:center; color:#999; padding:30px;">
+                    Aún no hay registros de ingreso para hoy.
                 </td>
             </tr>
         `;
+        return;
+    }
+
+    sorted.forEach(p => {
+        body.innerHTML += `
+            <tr>
+                <td><strong>${p.name}</strong></td>
+                <td>${p.room}</td>
+                <td style="color:#27ae60; font-weight:600">${p.times.in}</td>
+                <td style="color:#e67e22; font-weight:600">${p.times.motivo}</td>
+                <td style="color:#2980b9; font-weight:600">${p.times.regreso}</td>
+                <td style="color:#c0392b; font-weight:600">${p.times.final}</td>
+            </tr>
+        `;
     });
-
-    app.innerHTML = `
-        <div class="card">
-            <h2>${sede.nombre}</h2>
-
-            <button onclick="mostrarInicio()">⬅ Volver</button>
-            <br><br>
-
-            <table border="1" cellpadding="8" width="100%">
-                <tr>
-                    <th>Consultorio</th>
-                    <th>Doctor</th>
-                    <th>Estado</th>
-                    <th>Acción</th>
-                </tr>
-                ${filas}
-            </table>
-        </div>
-    `;
 }
 
+// Modal y Reinicio
+function openModal()  { document.getElementById('modal-reset').style.display = 'flex'; }
+function closeModal() { document.getElementById('modal-reset').style.display = 'none'; }
 
-
-/* =========================
-   CONSULTORIO
-========================= */
-function verConsultorio(sedeId, index) {
-    const c = sedes[sedeId].consultorios[index];
-    const hoy = fechaActual();
-    const r = c.historial[hoy] || {};
-
-    app.innerHTML = `
-        <div class="card">
-            <h2>Consultorio ${c.numero}</h2>
-
-            <label>Doctor:</label>
-            <input value="${c.doctor}" 
-                   onchange="cambiarDoctor(${sedeId}, ${index}, this.value)">
-
-            <p>Estado: <strong>${c.estado}</strong></p>
-
-            <button onclick="marcarIngreso(${sedeId}, ${index})">Ingreso</button>
-            <button onclick="salidaAlmuerzo(${sedeId}, ${index})">Salida Almuerzo</button>
-            <button onclick="regresoAlmuerzo(${sedeId}, ${index})">Regreso</button>
-            <button onclick="marcarSalida(${sedeId}, ${index})">Salida</button>
-
-            <hr>
-
-            <h4>Registro del día (${hoy})</h4>
-            <pre>${JSON.stringify(r, null, 2)}</pre>
-
-            <button onclick="entrarSede(${sedeId})">⬅ Volver</button>
-        </div>
-    `;
+function resetDay() {
+    db = db.map(p => ({
+        ...p,
+        status: 'none',
+        times: { in: '-', motivo: '-', regreso: '-', final: '-' }
+    }));
+    save();
+    renderStaff();
+    closeModal();
+    showView('view-home');
+    alert("Día reiniciado correctamente.");
 }
-
-/* =========================
-   CAMBIAR DOCTOR
-========================= */
-function cambiarDoctor(sedeId, index, nombre) {
-    sedes[sedeId].consultorios[index].doctor = nombre || "No asignado";
-    guardarDatos();
-}
-
-/* =========================
-   MARCAS DE TIEMPO
-========================= */
-function marcarIngreso(sedeId, index) {
-    const c = sedes[sedeId].consultorios[index];
-    const r = registroHoy(c);
-
-    r.ingreso = ahora();
-    c.estado = "En consulta";
-
-    guardarDatos();
-    verConsultorio(sedeId, index);
-}
-
-function salidaAlmuerzo(sedeId, index) {
-    const c = sedes[sedeId].consultorios[index];
-    const r = registroHoy(c);
-
-    r.salidaAlmuerzo = ahora();
-    c.estado = "En almuerzo";
-
-    guardarDatos();
-    verConsultorio(sedeId, index);
-}
-
-function regresoAlmuerzo(sedeId, index) {
-    const c = sedes[sedeId].consultorios[index];
-    const r = registroHoy(c);
-
-    r.regresoAlmuerzo = ahora();
-    c.estado = "En consulta";
-
-    guardarDatos();
-    verConsultorio(sedeId, index);
-}
-
-function marcarSalida(sedeId, index) {
-    const c = sedes[sedeId].consultorios[index];
-    const r = registroHoy(c);
-
-    r.salida = ahora();
-    c.estado = "Finalizó turno";
-
-    guardarDatos();
-    verConsultorio(sedeId, index);
-}
-
-/* =========================
-   NUEVO DÍA
-========================= */
-function nuevoDia() {
-    if (!confirm("¿Iniciar un nuevo día? El historial se conservará.")) return;
-
-    for (const sedeId in sedes) {
-        sedes[sedeId].consultorios.forEach(c => {
-            c.estado = "No llegó";
-        });
-    }
-
-    guardarDatos();
-    mostrarInicio();
-}
-
-/* =========================
-   HISTORIAL VISUAL
-========================= */
-function mostrarHistorial() {
-    app.innerHTML = `
-        <div class="card">
-            <h2>Historial por fecha</h2>
-
-            <input type="date" id="fechaHistorial"><br><br>
-
-            <button onclick="verHistorial()">Ver</button>
-            <button onclick="mostrarInicio()">⬅ Volver</button>
-        </div>
-    `;
-}
-
-function verHistorial() {
-    const fecha = document.getElementById("fechaHistorial").value;
-    if (!fecha) return alert("Seleccione una fecha");
-
-    let filas = "";
-
-    for (const sedeId in sedes) {
-        sedes[sedeId].consultorios.forEach(c => {
-            const r = c.historial[fecha];
-            if (r) {
-                filas += `
-                    <tr>
-                        <td>${sedes[sedeId].nombre}</td>
-                        <td>${c.numero}</td>
-                        <td>${c.doctor}</td>
-                        <td>${r.ingreso?.hora || "-"}</td>
-                        <td>${r.salidaAlmuerzo?.hora || "-"}</td>
-                        <td>${r.regresoAlmuerzo?.hora || "-"}</td>
-                        <td>${r.salida?.hora || "-"}</td>
-                    </tr>
-                `;
-            }
-        });
-    }
-
-    if (!filas) {
-        filas = `<tr><td colspan="7">No hay registros</td></tr>`;
-    }
-
-    app.innerHTML = `
-        <div class="card">
-            <h2>Historial del ${fecha}</h2>
-
-            <table border="1" cellpadding="6">
-                <tr>
-                    <th>Sede</th>
-                    <th>Consultorio</th>
-                    <th>Doctor</th>
-                    <th>Ingreso</th>
-                    <th>Salida Almuerzo</th>
-                    <th>Regreso</th>
-                    <th>Salida</th>
-                </tr>
-                ${filas}
-            </table>
-
-            <br>
-            <button onclick="mostrarHistorial()">⬅ Volver</button>
-        </div>
-    `;
-}
-
-/* =========================
-   INICIO
-========================= */
-mostrarInicio();
