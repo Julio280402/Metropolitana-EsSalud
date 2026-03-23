@@ -5,12 +5,20 @@
 // room     : consultorio por defecto (editable en pantalla)
 // ============================================================
 const staffList = [
-    { id: 1, fullName: "Dra. Torres Avalos Nadia del Pilar",   name: "Dra. Nadia Torres",    room: "C-101" },
+    { id: 1, fullName: "Dra. Torres Avalos Nadia del Pilar",   name: "Dra. Nadia Torres",    room: "C-222" },
     { id: 2, fullName: "Dra. Fernandez Yupanqui Veronica",     name: "Dra. Veronica Fernandez",  room: "C-102" },
     { id: 3, fullName: "Dr. Yaco Quispe Juan Carlos",   name: "Dr. Juan Carlos Yaco",  room: "C-103" },
     { id: 4, fullName: "Dr. Castillo Inquilla Miguel",       name: "Dr. Miguel Inquilla",    room: "Lab-1" },
     { id: 5, fullName: "Dra. Puma Angelo Rosario Elizabeth",      name: "Dra. Rosario Puma",   room: "C-105" },
-    { id: 6, fullName: "Dra. Mauricio Cordova Yelitza",         name: "Dra. Yelitza Mauricio",    room: "Triaje" }
+    { id: 6, fullName: "Dra. Mauricio Cordova Yelitza",         name: "Dra. Yelitza Mauricio",    room: "Triaje" },
+    { id: 7, fullName: "Dra. Liendo Acosta Danitza del Rosario",         name: "Dra. Danitza Liendo",    room: "Triaje" },
+    { id: 8, fullName: "Dra. Chavez Catacora Benilde",         name: "Dra. Benilde Chavez",    room: "Triaje" },
+    { id: 9, fullName: "Dra. Choque la Torre Raquel Virginia",         name: "Dra. Raquel Choque",    room: "Triaje" },
+    { id: 10, fullName: "Dr. Carpio Macedo Omar Fernando",         name: "Dr. Omar Carpio",    room: "Triaje" },
+    { id: 11, fullName: "Dra. Zea Tapia Milagros del Rosario",         name: "Dra. Milagros Zea",    room: "Triaje" },
+    { id: 12, fullName: "Dra. Salazar Carrasco Sofia",         name: "Dra. Sofia Salazar",    room: "Triaje" },
+    { id: 13, fullName: "Dra. Vizcarra Jimenez Dariela",         name: "Dra. Dariela Vizcarra",    room: "Triaje" },
+    { id: 14, fullName: "Dra. Carrasco Espinza Adriana Isabel",         name: "Dra. Adriana Carrasco",    room: "Triaje" }
 ];
 
 let db = [];
