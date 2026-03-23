@@ -18,7 +18,12 @@ const staffList = [
     { id: 11, fullName: "Dra. Zea Tapia Milagros del Rosario",         name: "Dra. Milagros Zea",    room: "Triaje" },
     { id: 12, fullName: "Dra. Salazar Carrasco Sofia",         name: "Dra. Sofia Salazar",    room: "Triaje" },
     { id: 13, fullName: "Dra. Vizcarra Jimenez Dariela",         name: "Dra. Dariela Vizcarra",    room: "Triaje" },
-    { id: 14, fullName: "Dra. Carrasco Espinza Adriana Isabel",         name: "Dra. Adriana Carrasco",    room: "Triaje" }
+    { id: 14, fullName: "Dra. Carrasco Espinza Adriana Isabel",         name: "Dra. Adriana Carrasco",    room: "Triaje" },
+    { id: 15, fullName: "Dra. CD. Bornaz Arenas Milagros",         name: "Dra. Milagros Bornaz",    room: "Triaje" },
+    { id: 16, fullName: "Dr. CD. Castro Torres Jorge Luis",         name: "Dr. Jorge Castro",    room: "Triaje" },
+    { id: 17, fullName: "Dr. CD. Hoyos Garcia Jorge",         name: "Dr. Jorge Hoyos",    room: "Triaje" },
+    { id: 18, fullName: "Dr. CD. Nina Cohaila David",         name: "Dr. David Nina",    room: "Triaje" },
+    { id: 19, fullName: "Dr. CD. Yturry Choqueza Ernesto",         name: "Dr. Ernesto Yturry",    room: "Triaje" }
 ];
 
 let db = [];
