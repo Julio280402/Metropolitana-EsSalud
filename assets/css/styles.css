@@ -79,7 +79,7 @@ body { background-color: var(--gray-bg); overflow-x: hidden; }
     z-index: 100;
 }
 
-/* Botón Volver mejorado */
+/* Botón Volver */
 .btn-back {
     display: flex;
     align-items: center;
@@ -131,9 +131,45 @@ body { background-color: var(--gray-bg); overflow-x: hidden; }
 .state-final { border-left-color: #333; opacity: 0.8; }
 
 .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.name-tag h4 { font-size: 1.1rem; color: #2c3e50; }
+.name-tag h4 { font-size: 1.1rem; color: #2c3e50; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .room-tag input { width: 70px; padding: 5px; border: 1px solid #ddd; border-radius: 5px; text-align: center; }
 
+/* Botón ojo */
+.btn-eye {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 2px 5px;
+    border-radius: 50%;
+    color: #aaa;
+    transition: color 0.2s, background 0.2s;
+    line-height: 1;
+}
+.btn-eye:hover { color: var(--blue-essalud); background: #e8f4ff; }
+.btn-eye.eye-active { color: var(--blue-essalud); }
+
+/* Nombre completo desplegable */
+.full-name-tooltip {
+    font-size: 0.82rem;
+    color: #555;
+    background: #f0f6ff;
+    border-left: 3px solid var(--blue-essalud);
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 6px;
+    animation: fadeIn 0.2s ease;
+    width: 100%;
+}
+
+/* Botón ojo en tabla historial */
+.btn-eye-table {
+    font-size: 0.85rem;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+/* Botones de acción */
 .btn-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .btn-action {
     padding: 12px 5px;
