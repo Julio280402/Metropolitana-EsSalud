@@ -6,7 +6,7 @@
 // ============================================================
 const staffList = [
     { id: 1, fullName: "Dra. Torres Avalos Nadia del Pilar",   name: "Dra. Nadia Torres",    room: "C-222" },
-    { id: 2, fullName: "Dra. Fernandez Yupanqui Veronica",     name: "Dra. Veronica Fernandez",  room: "C-102" },
+    { id: 2, fullName: "Dra. Fernandez Yupanqui Veronica Ruth",     name: "Dra. Veronica Fernandez",  room: "C-102" },
     { id: 3, fullName: "Dr. Yaco Quispe Juan Carlos",   name: "Dr. Juan Carlos Yaco",  room: "C-103" },
     { id: 4, fullName: "Dr. Castillo Inquilla Miguel",       name: "Dr. Miguel Inquilla",    room: "Lab-1" },
     { id: 5, fullName: "Dra. Puma Angelo Rosario Elizabeth",      name: "Dra. Rosario Puma",   room: "C-105" },
@@ -30,7 +30,57 @@ const staffList = [
     { id: 23, fullName: "Lic. Garcia Delgado Yesenia",         name: "Lic. Yesenia Garcia",    room: "Triaje" },
     { id: 24, fullName: "Lic. Berrios Salas Edda",         name: "Lic. Edda Berrios",    room: "Triaje" },
     { id: 25, fullName: "Lic. Pari Flores Noelia",         name: "Lic. Noelia Pari",    room: "Triaje" },
-    { id: 26, fullName: "Lic. Fuentes Fuster Fabiola",         name: "Lic. Fabiola Fuentes",    room: "Triaje" }
+    { id: 26, fullName: "Lic. Fuentes Fuster Fabiola",         name: "Lic. Fabiola Fuentes",    room: "Triaje" },
+    
+    { id: 27, fullName: "Lic. Enf. Tito Delgado Lizbeth",         name: "Lic. Lizbeth Tito",    room: "Triaje" },
+    { id: 28, fullName: "Lic. Enf. Franco Mansilla Elvira",         name: "Lic. Elvira Franco",    room: "Triaje" },
+    { id: 29, fullName: "Lic. Enf. Villanueva Salas Susana",         name: "Lic. Susana Villanueva",    room: "Triaje" },
+    { id: 30, fullName: "Lic. Enf. Cornejo Chavez Deysi",         name: "Lic. Deysi Cornejo",    room: "Triaje" },
+    { id: 31, fullName: "Lic. Enf. Castro Guisa Veronica",         name: "Lic. Veronica Castro",    room: "Triaje" },
+    { id: 32, fullName: "Lic. Enf. Huacan Mamani Patricia",         name: "Lic. Patricia Huacan",    room: "Triaje" },
+    { id: 33, fullName: "Lic. Enf. Mamani Ccusi Melina",         name: "Lic. Melina Mamani",    room: "Triaje" },
+    { id: 34, fullName: "Lic. Enf. Salgado Lopez Juan Carlos",         name: "Lic. Juan Carlos",    room: "Triaje" },
+    { id: 35, fullName: "Lic. Enf. Vergara Flores Tatiana",         name: "Lic. Tatiana Vergara",    room: "Triaje" },
+    { id: 36, fullName: "Lic. Enf. Infantes Cordova Karen",         name: "Lic. Karen Infantes",    room: "Triaje" },
+    { id: 37, fullName: "Lic. Enf. Ninahuaman Barreto Sheyla",         name: "Lic. Sheyla Ninahuaman",    room: "Triaje" },
+    { id: 38, fullName: "Lic. Enf. Zelada Melchor Jossy",         name: "Lic. Jossy Zelada",    room: "Triaje" },
+    { id: 39, fullName: "Lic. Enf. Gallegos Soto Angela",         name: "Lic. Angela Gallegos",    room: "Triaje" },
+    { id: 40, fullName: "Lic. Enf. Escobar Isidro Elizabeth",         name: "Lic. Elizabeth Escobar",    room: "Triaje" },
+    { id: 41, fullName: "Lic. Enf. Gutierrez Otero Marycielo",         name: "Lic. Marycielo Gutierrez",    room: "Triaje" },
+    
+    { id: 42, fullName: "Tec. Patiño Ochoa Yuddi Naty",         name: "Tec. Yuddi Patiño",    room: "Triaje" },
+    { id: 43, fullName: "Tec. Chipana Chagua Yessica",         name: "Tec. Yessica Chipana",    room: "Triaje" },
+    { id: 44, fullName: "Tec. Choqueza Chaiña Cesar",         name: "Tec. Cesar Choqueza",    room: "Triaje" },
+    { id: 45, fullName: "Tec. Rivera Maldonado Sonia",         name: "Tec. Sonia Rivera",    room: "Triaje" },
+    
+    { id: 46, fullName: "Tec. Med. Gaspar Martinez Katherine",         name: "Tec. Katherine Gaspar",    room: "Triaje" },
+    { id: 47, fullName: "Tec. Med. Quiroz Berrios Brayan",         name: "Tec. Brayan Quiroz",    room: "Triaje" },
+    { id: 48, fullName: "Tec. Med. Lopez Vergara Marielli",         name: "Tec. Marielli Lopez",    room: "Triaje" },
+    
+    { id: 49, fullName: "Tec. Enf. Veliz Muñoz Alejandra",         name: "Tec. Alejandra Veliz",    room: "Triaje" },
+    { id: 50, fullName: "Tec. Enf. Osorio Vargas Juana",         name: "Tec. Juana Osorio",    room: "Triaje" },
+    { id: 51, fullName: "Tec. Enf. Condori Barreto Delia",         name: "Tec. Delia Condori",    room: "Triaje" },
+    { id: 52, fullName: "Tec. Enf. Molina Gadea Nelia",         name: "Tec. Nelia Molina",    room: "Triaje" },
+    { id: 53, fullName: "Tec. Enf. Aroni Rivera Noemi",         name: "Tec. Noemi Aroni",    room: "Triaje" },
+    { id: 54, fullName: "Tec. Enf. Almanza Carrazco Janet",         name: "Tec. Janet Almanza",    room: "Triaje" },
+    { id: 55, fullName: "Tec. Enf. Zavaleta Cordova Hellen",         name: "Tec. Hellen Zavaleta",    room: "Triaje" },
+    { id: 56, fullName: "Tec. Enf. Paniagua Acuña Rossmery",         name: "Tec. Rossmery Paniagua",    room: "Triaje" },
+    { id: 57, fullName: "Tec. Enf. Contreras Pereira Nelly",         name: "Tec. Nelly Contreras",    room: "Triaje" },
+    { id: 58, fullName: "Tec. Enf. Hualpa Llanos Carmen",         name: "Tec. Carmen Hualpa",    room: "Triaje" },
+    { id: 59, fullName: "Tec. Enf. Condori Apaza Lucy",         name: "Tec. Lucy Condori",    room: "Triaje" },
+    { id: 60, fullName: "Tec. Enf. Aguilar Vilca Patricia",         name: "Tec. Patricia Aguilar",    room: "Triaje" },
+    { id: 61, fullName: "Tec. Enf. Acero Clavitea Agripina",         name: "Tec. Agripina Acero",    room: "Triaje" },
+    { id: 62, fullName: "Tec. Enf. Yapuchura Platero Celia",         name: "Tec. Celia Yapuchura",    room: "Triaje" },
+    { id: 63, fullName: "Tec. Enf. Huamani Quicaño Flor",         name: "Tec. Flor Huamani",    room: "Triaje" },
+    { id: 64, fullName: "Tec. Enf. Guillen Baldarrago Mery",         name: "Tec. Mey Guillen",    room: "Triaje" },
+    { id: 65, fullName: "Tec. Enf. Ramos Vargas Maria",         name: "Tec. Maria Ramos",    room: "Triaje" },
+    { id: 66, fullName: "Tec. Enf. Maynita Mayhuiri Isabel",         name: "Tec. Isabel Maynita",    room: "Triaje" },
+    { id: 67, fullName: "Tec. Enf. Huiza Flores Stefany",         name: "Tec. Stefany Huiza",    room: "Triaje" },
+    { id: 68, fullName: "Tec. Enf. Cotrado Flores Edith",         name: "Tec. Edith Cotrado",    room: "Triaje" },
+    { id: 69, fullName: "Tec. Enf. Lupaca Mamani Martha",         name: "Tec. Martha Lupaca",    room: "Triaje" },
+    { id: 70, fullName: "Tec. Enf. Abrigo Chahua Yobana",         name: "Tec. Yobana Abrigo",    room: "Triaje" },
+    { id: 71, fullName: "Tec. Enf. Torres Mamani Yeni",         name: "Tec. Yeni Torres",    room: "Triaje" },
+    { id: 72, fullName: "Tec. Enf. Figueroa Layme Sharon",         name: "Tec. Sharon Figueroa",    room: "Triaje" }
 ];
 
 let db = [];
